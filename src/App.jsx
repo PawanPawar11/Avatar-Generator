@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "remixicon/fonts/remixicon.css";
 
 const data = [
@@ -53,21 +54,44 @@ const App = () => {
     setOption(e.target.value);
   };
 
+  const generateAvatar = () => {
+    let selected = data.find((item) => item.value === option);
+    if (!selected) return;
+
+    let randomNum = Date.now();
+    let randomNumForPerson = Math.floor(Math.random() * 100);
+
+    const newUrl =
+      option === "male" || option === "female"
+        ? `${selected.url}${randomNumForPerson}.jpg`
+        : `${selected.url}${randomNum}`;
+
+    setSrc(newUrl);
+  };
+
+  const downloadImage = () => {
+    if (!src) return;
+
+    const link = document.createElement("a");
+    link.href = src;
+    link.download = "avatar.png";
+    link.click();
+    link.remove();
+  };
+
+  const copyImageUrl = () => {
+    if (!src) return;
+
+    try {
+      navigator.clipboard.writeText(src);
+      toast.success("Image URL Copied!");
+    } catch (error) {
+      toast.error("Failed to Copy Image URL!");
+      console.log("Error while Copying Image URL", error);
+    }
+  };
+
   useEffect(() => {
-    const generateAvatar = () => {
-      let selected = data.find((item) => item.value === option);
-
-      let randomNum = Date.now();
-      let randomNumForPerson = Math.floor(Math.random() * 100);
-
-      const newUrl =
-        option === "male" || option === "female"
-          ? `${selected.url}${randomNumForPerson}.jpg`
-          : `${selected.url}${randomNum}`;
-
-      setSrc(newUrl);
-    };
-
     generateAvatar();
   }, [option]);
 
@@ -88,7 +112,7 @@ const App = () => {
         </div>
 
         <select
-          className="bg-purple-700 p-1 py-1 px-2 rounded-md"
+          className="bg-purple-700 p-1 py-1 px-2 rounded-md outline-none"
           value={option}
           onChange={onOptionChange}
         >
@@ -102,20 +126,30 @@ const App = () => {
         <div className="bg-purple-700 p-1 py-1 px-2 rounded-md">{src}</div>
 
         <div className="flex gap-6 w-full">
-          <button className="flex-1 bg-yellow-700 rounded-md p-1">
+          <button
+            className="flex-1 bg-yellow-700 rounded-md p-1"
+            onClick={generateAvatar}
+          >
             <i className="ri-arrow-right-up-line m-1"></i>
             Change
           </button>
-          <button className="flex-1 bg-cyan-700 rounded-md p-1">
+          <button
+            className="flex-1 bg-cyan-700 rounded-md p-1"
+            onClick={downloadImage}
+          >
             <i className="ri-arrow-down-line m-1"></i>
             Download
           </button>
-          <button className="flex-1 bg-slate-700 rounded-md p-1">
+          <button
+            className="flex-1 bg-slate-700 rounded-md p-1"
+            onClick={copyImageUrl}
+          >
             <i className="ri-file-copy-line m-1"></i>
             Copy
           </button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
