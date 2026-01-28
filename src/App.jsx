@@ -47,29 +47,25 @@ const data = [
 
 const App = () => {
   const [option, setOption] = useState("male");
-  const [src, setSrc] = useState("https://randomuser.me/api/portraits/men/");
+  const [src, setSrc] = useState("");
 
   const onOptionChange = (e) => {
-    let value = e.target.value;
-    setOption(value);
-
-    let selectedBlock = data.find((item) => item.value === value);
-    console.log(selectedBlock.url);
-    setSrc(selectedBlock.url);
+    setOption(e.target.value);
   };
 
   useEffect(() => {
     const generateAvatar = () => {
+      let selected = data.find((item) => item.value === option);
+
       let randomNum = Date.now();
       let randomNumForPerson = Math.floor(Math.random() * 100);
 
-      if (option === "male" || option === "female") {
-        let newUrl = `${src}${randomNumForPerson}.jpg`;
-        setSrc(newUrl);
-      } else {
-        let newUrl = `${src}${randomNum}`;
-        setSrc(newUrl);
-      }
+      const newUrl =
+        option === "male" || option === "female"
+          ? `${selected.url}${randomNumForPerson}.jpg`
+          : `${selected.url}${randomNum}`;
+
+      setSrc(newUrl);
     };
 
     generateAvatar();
