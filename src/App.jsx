@@ -96,23 +96,25 @@ const App = () => {
   }, [option]);
 
   return (
-    <div className="text-white min-h-screen bg-linear-to-br from-purple-700 via-indigo-700 to-pink-700 flex items-center justify-center">
-      <div className="border border-purple-900/90 flex flex-col items-center gap-6 w-full lg:w-2xl h-96 bg-white-500/30 rounded-xl shadow-2xl backdrop-blur-xl p-4">
+    <div className="text-slate-100 min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="border border-slate-700 flex flex-col items-center gap-6 w-full lg:w-2xl min-h-96 bg-slate-900/70 rounded-xl shadow-2xl shadow-black/50 backdrop-blur-xl p-6">
         <img
           src={src || "/avatar.png"}
-          alt="avatar png"
-          className="w-24 rounded-full"
+          alt="avatar"
+          className="w-24 rounded-full ring-2 ring-slate-700"
         />
 
         <div className="text-center">
-          <p className="text-4xl font-bold tracking-tighter">
+          <p className="text-4xl font-bold tracking-tight text-slate-100">
             Avatar Generator
           </p>
-          <p>Generate Male, Female, Cartoon, or Realistic avatars.</p>
+          <p className="text-slate-400">
+            Generate Male, Female, Cartoon, or Artistic avatars.
+          </p>
         </div>
 
         <select
-          className="bg-purple-700 p-1 py-1 px-2 rounded-md outline-none"
+          className="bg-slate-800 text-slate-200 p-2 rounded-md outline-none border border-slate-700 focus:ring-2 focus:ring-indigo-500"
           value={option}
           onChange={onOptionChange}
         >
@@ -123,33 +125,38 @@ const App = () => {
           ))}
         </select>
 
-        <div className="bg-purple-700 p-1 py-1 px-2 rounded-md">{src}</div>
+        <div className="bg-slate-800 text-slate-400 text-center p-2 rounded-md border border-slate-700 text-xs w-full">
+          {src}
+        </div>
 
-        <div className="flex gap-6 w-full">
+        <div className="flex gap-4 w-full">
           <button
-            className="flex-1 bg-yellow-700 rounded-md p-1"
+            className="flex-1 bg-indigo-600 hover:bg-indigo-500 transition rounded-md p-2"
             onClick={generateAvatar}
           >
-            <i className="ri-arrow-right-up-line m-1"></i>
+            <i className="ri-refresh-line mr-1"></i>
             Change
           </button>
+
           <button
-            className="flex-1 bg-cyan-700 rounded-md p-1"
+            className="flex-1 bg-emerald-600 hover:bg-emerald-500 transition rounded-md p-2"
             onClick={downloadImage}
           >
-            <i className="ri-arrow-down-line m-1"></i>
+            <i className="ri-download-line mr-1"></i>
             Download
           </button>
+
           <button
-            className="flex-1 bg-slate-700 rounded-md p-1"
+            className="flex-1 bg-violet-600 hover:bg-violet-500 transition rounded-md p-2"
             onClick={copyImageUrl}
           >
-            <i className="ri-file-copy-line m-1"></i>
+            <i className="ri-file-copy-line mr-1"></i>
             Copy
           </button>
         </div>
       </div>
-      <ToastContainer />
+
+      <ToastContainer theme="dark" />
     </div>
   );
 };
