@@ -1,45 +1,127 @@
-import React from 'react'
-import 'remixicon/fonts/remixicon.css'
+import { useState, useEffect } from "react";
+import "remixicon/fonts/remixicon.css";
+
+const data = [
+  {
+    label: "Illustration",
+    value: "illustration",
+    url: "https://api.dicebear.com/7.x/avataaars/svg?seed=",
+  },
+
+  {
+    label: "Cartoon",
+    value: "cartoon",
+    url: "https://api.dicebear.com/7.x/adventurer/svg?seed=",
+  },
+
+  {
+    label: "Sketchy",
+    value: "sketchy",
+    url: "https://api.dicebear.com/7.x/croodles/svg?seed=",
+  },
+
+  {
+    label: "Robots",
+    value: "robots",
+    url: "https://api.dicebear.com/7.x/bottts/svg?seed=",
+  },
+
+  {
+    label: "Art",
+    value: "art",
+    url: "https://api.dicebear.com/7.x/pixel-art/svg?seed=",
+  },
+
+  {
+    label: "Male",
+    value: "male",
+    url: "https://randomuser.me/api/portraits/men/",
+  },
+
+  {
+    label: "Female",
+    value: "female",
+    url: "https://randomuser.me/api/portraits/women/",
+  },
+];
 
 const App = () => {
-  return (
-    <div className='min-h-screen bg-linear-to-br from-purple-500 via-indigo-400 to-pink-500 flex items-center justify-center'>
-      <div className='flex flex-col items-center gap-6 w-full lg:w-2xl h-96 bg-white-500/30 rounded-xl shadow-2xl backdrop-blur-xl p-4'>
-        <img src="/avatar.png" alt="avatar png" className='w-24' />
+  const [option, setOption] = useState("male");
+  const [src, setSrc] = useState("https://randomuser.me/api/portraits/men/");
 
-        <div className='text-center'>
-          <p>Avatar Generator</p>
+  const onOptionChange = (e) => {
+    let value = e.target.value;
+    setOption(value);
+
+    let selectedBlock = data.find((item) => item.value === value);
+    console.log(selectedBlock.url);
+    setSrc(selectedBlock.url);
+  };
+
+  useEffect(() => {
+    const generateAvatar = () => {
+      let randomNum = Date.now();
+      let randomNumForPerson = Math.floor(Math.random() * 100);
+
+      if (option === "male" || option === "female") {
+        let newUrl = `${src}${randomNumForPerson}.jpg`;
+        setSrc(newUrl);
+      } else {
+        let newUrl = `${src}${randomNum}`;
+        setSrc(newUrl);
+      }
+    };
+
+    generateAvatar();
+  }, [option]);
+
+  return (
+    <div className="text-white min-h-screen bg-linear-to-br from-purple-700 via-indigo-700 to-pink-700 flex items-center justify-center">
+      <div className="border border-purple-900/90 flex flex-col items-center gap-6 w-full lg:w-2xl h-96 bg-white-500/30 rounded-xl shadow-2xl backdrop-blur-xl p-4">
+        <img
+          src={src || "/avatar.png"}
+          alt="avatar png"
+          className="w-24 rounded-full"
+        />
+
+        <div className="text-center">
+          <p className="text-4xl font-bold tracking-tighter">
+            Avatar Generator
+          </p>
           <p>Generate Male, Female, Cartoon, or Realistic avatars.</p>
         </div>
 
-        <select>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Cartoon</option>
-          <option>Illustration</option>
+        <select
+          className="bg-purple-700 p-1 py-1 px-2 rounded-md"
+          value={option}
+          onChange={onOptionChange}
+        >
+          {data.map((item, index) => (
+            <option value={item.value} key={index}>
+              {item.label}
+            </option>
+          ))}
         </select>
 
-        <div>
-          https://www.pawanpawar.me
-        </div>
+        <div className="bg-purple-700 p-1 py-1 px-2 rounded-md">{src}</div>
 
-        <div className='flex gap-6 w-full'>
-          <button className='flex-1 bg-yellow-200 rounded-md p-1'>
-            <i class="ri-arrow-right-up-line"></i>
+        <div className="flex gap-6 w-full">
+          <button className="flex-1 bg-yellow-700 rounded-md p-1">
+            <i className="ri-arrow-right-up-line m-1"></i>
             Change
           </button>
-          <button className='flex-1 bg-cyan-200 rounded-md p-1'>
-            <i class="ri-arrow-down-line"></i>
+          <button className="flex-1 bg-cyan-700 rounded-md p-1">
+            <i className="ri-arrow-down-line m-1"></i>
             Download
           </button>
-          <button className='flex-1 bg-slate-200 rounded-md p-1'>
-            <i class="ri-file-copy-line"></i>
+          <button className="flex-1 bg-slate-700 rounded-md p-1">
+            <i className="ri-file-copy-line m-1"></i>
             Copy
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
